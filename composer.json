@@ -1,9 +1,14 @@
 {
-    "name": "ahmadawais/wp-oop-settings-api",
-    "description": "WP-OOP-Settings-API is a Settings API wrapper built with Object Oriented Programming practices.",
+    "name": "youniwemi/wp-settings-kit",
+    "description": "WP Settings Kit is a lightweight library for easily creating WordPress settings pages and Post metaboxes.",
     "type": "library",
     "license": "GPL-2.0",
+    "version" : "1.1.0",
+    "minimum-stability": "stable",
     "autoload": {
-	    "files": ["class-wp-osa.php"]
-	 }
+	    "files": ["class-wp-settings-kit.php"]
+	},
+    "require": {
+        "php": ">=7.4"
+    }
 }
