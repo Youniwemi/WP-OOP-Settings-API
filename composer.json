@@ -3,7 +3,6 @@
     "description": "WP Settings Kit is a lightweight library for easily creating WordPress settings pages and Post metaboxes.",
     "type": "library",
     "license": "GPL-2.0",
-    "version" : "1.1.0",
     "minimum-stability": "stable",
     "autoload": {
 	    "files": ["class-wp-settings-kit.php"]
