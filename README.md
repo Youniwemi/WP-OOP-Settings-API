@@ -1,50 +1,32 @@
 <h1 align="center">
-  <img src="https://i.imgur.com/gVEqftv.jpg" />
-
-  WordPress OOP Settings And Metabox API
-
+  WordPress Settings Kit - Lightweight library for easily creating WordPress Settings Pages and Post Metaboxes
 </h1>
 
 
-[![Tweet for help](https://img.shields.io/twitter/follow/mrahmadawais.svg?style=social&label=Tweet%20@MrAhmadAwais)](https://twitter.com/mrahmadawais/) [![GitHub stars](https://img.shields.io/github/stars/ahmadawais/WP-OOP-Settings-API.svg?style=social&label=Stars)](https://github.com/ahmadawais/WP-OOP-Settings-API/stargazers) [![GitHub followers](https://img.shields.io/github/followers/ahmadawais.svg?style=social&label=Follow)](https://github.com/ahmadawais?tab=followers) — :point_up: Make sure you :star: and :eyes: this repository!
+[![Tweet for help](https://img.shields.io/twitter/follow/rahalaboulfeth.svg?style=social&label=Tweet%20@rahalaboulfeth)](https://twitter.com/rahalaboulfeth/) [![GitHub stars](https://img.shields.io/github/stars/youniwemi/WP-OOP-Settings-API.svg?style=social&label=Stars)](https://github.com/youniwemi/WP-OOP-Settings-API/stargazers) [![GitHub followers](https://img.shields.io/github/followers/youniwemi.svg?style=social&label=Follow)](https://github.com/youniwemi?tab=followers) — :point_up: Make sure you :star: and :eyes: this repository!
 
-> Ever wanted to build custom settings (or metaboxes) inside your WordPress plugin or theme and didn't like the non-DRY approach for creating custom settings and metaboxes via WordPress API? Well, that's why and when I wrote this OOP Wrapper for WordPress Settings API. 🎊
-
-![Screenshots](https://on.ahmda.ws/qPBC/c)
-
-
+> Ever wanted to build custom settings (or metaboxes) inside your WordPress plugin or theme and didn't like the non-DRY approach for creating custom settings and metaboxes via WordPress API? Well, this package is an attempt to fix this. 🎊
 
 ## Screenshots
 
 ![](https://i.imgur.com/EXUoeLZ.png)
 ![](https://i.imgur.com/sc9816W.png)
-![](https://i.imgur.com/0SWjn4A.png)
 
 
 ## COMPOSER INSTALL
 
-* As for now, this package is not yet submited to packagist, you'll have the repository to your composer file like this :
-```json
-{
-    "require": {
-        "ahmadawais/WP-OOP-Settings-API": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url":  "https://github.com/ahmadawais/WP-OOP-Settings-API.git"
-        }
-    ]
-}
+* You can install the library using composer 
+```bash
+composer require youniwemi/wp-settings-kit
 
 ```
 
-* You'll be able to use WP_OSA class after requiring vendor/autoload.php
+* You'll be able to use WP_Settings_Kit class after requiring vendor/autoload.php
 
 ## USAGE
 
 ### USAGE For Setting Page
-* Prepare an array of options then instanciate WP_OSA
+* Prepare an array of options then instanciate WP_Settings_Kit
 ```php
 $options = 
 [
@@ -66,13 +48,13 @@ $options =
         ]
     ]
 ];
-$setting = new WP_OSA($options);
+$setting = new WP_Settings_Kit($options);
 ```
-* Once the options are saved, constants MY\_\AWESOME\_FEATURE\_ACTIVE will be available and will be able to set the first setting MY\_AWESOME\_FEATURE\_FIRST\_SETTING 
+* Once the options are saved, constants MY\_AWESOME\_FEATURE\_ACTIVE will be available and will be able to set the first setting MY\_AWESOME\_FEATURE\_FIRST\_SETTING 
 
 
 ### USAGE For Post Metabox
-* Prepare an array of options as well as the metabox definition then instanciate WP_OSA
+* Prepare an array of options as well as the metabox definition then instanciate WP_Settings_Kit
 
 ```php
 $options = 
@@ -102,7 +84,7 @@ $metabox = [
     'context' => 'advanced',
     'priority' => 'default',
 ];
-$metabox = new WP_OSA($options , $metabox);
+$metabox = new WP_Settings_Kit($options , $metabox);
 ```
 
 * Once the metabox is saved, fields will be saved as post metas : MY\_AWESOME\_FEATURE\_FIRST\_ACTIVE  and   MY\_AWESOME\_FEATURE\_FIRST\_SETTING 
@@ -139,49 +121,32 @@ $metabox = new WP_OSA($options , $metabox);
 - [ ] Re-factor the code with WP Standards
 - [ ] Re-factor the code into classes
 
-![License](https://on.ahmda.ws/qNys/c)
-
 ## License
 Release under GNU GPL v2.0
 
 
-![Credits](https://on.ahmda.ws/qOxs/c)
-
 ## Credits
+
+This package is a fork of [https://github.com/ahmadawais/WP-OOP-Settings-API](https://github.com/ahmadawais/WP-OOP-Settings-API)   based on the work of @tareq1988 [https://github.com/tareq1988/wordpress-settings-api-class](https://github.com/tareq1988/wordpress-settings-api-class) 
 
 @AhmadAwais, @deviorobert, @MaedahBatool
 AND @WordPress, @tareq1988, @royboy789, @twigpress, @rahal.
 
 
 ---
-![Hello](https://on.ahmda.ws/3dea3a3b1de3/c)
+### 🙌 [Youniwemi](https://www.youniwemi.com)
 
-### 🙌 [THEDEVCOUPLE PARTNERS](https://TheDevCouple.com/partners)
+This open source fork is maintained by the help of awesome businesses listed below :
+- [Youniwemi](https://www.youniwemi.com)
+- [Instareza](https://www.instareza.com)
 
-This open source project is maintained by the help of awesome businesses listed below. What? [Read more about it →](https://TheDevCouple.com/partners)
 
-<table width='100%'>
-	<tr>
-		<td width='500'><a target='_blank' href='https://kinsta.com/?kaid=WMDAKYHJLNJX&utm_source=TheDevCouple&utm_medium=Partner'><img src='https://on.ahmda.ws/73cedc/c' /></a></td>
-		<td width='500'><a target='_blank' href='https://ahmda.ws/USES_WPE?utm_source=TheDevCouple&utm_medium=Partner'><img src='https://on.ahmda.ws/ff40fe/c' /></a></td>
-	</tr>
-	<tr>
-		<td width='500'><a target='_blank' href='https://mythemeshop.com/?utm_source=TheDevCouple&utm_medium=Partner'><img src='https://on.ahmda.ws/3166d9/c' /></a></td>
-		<td width='500'><a target='_blank' href='https://ipapi.com/?utm_source=TheDevCouple&utm_medium=Partner'><img src='https://d2ddoduugvun08.cloudfront.net/items/1R190r2U0p3N3L0U0b2u/ip-api.png'/></a></td>
-	</tr>
-</table>
+This package is used in the following wordpress plugins
+- [Mail Control](https://wordpress.org/plugins/mail-control/)
+- [Aiify Blocks](https://wordpress.org/plugins/aiify/)
 
 <br />
 <br />
 <p align="center">
-<strong>For anything else, tweet at <a href="https://twitter.com/MrAhmadAwais/" target="_blank" rel="noopener noreferrer">@MrAhmadAwais</a></strong>
+<strong>For anything else, tweet at <a href="https://twitter.com/rahalaboulfeth/" target="_blank" rel="noopener noreferrer">@rahalaboulfeth</a></strong>
 </p>
-
-<div align="center">
-	<p>I have released a video course to help you become a better developer — <a href="https://VSCode.pro/?utm_source=GitHubFOSS" target="_blank">Become a VSCode Power User →</a></p>
-    <br />
-  <a href="https://VSCode.pro/?utm_source=GitHubFOSS" target="_blank">
-  <img src="https://raw.githubusercontent.com/ahmadawais/shades-of-purple-vscode/master/images/vscodeproPlay.jpg" /><br>VSCode</a>
-
-  _<small><a href="https://VSCode.pro/?utm_source=GitHubFOSS" target="_blank">VSCode Power User Course →</a></small>_
-</div>

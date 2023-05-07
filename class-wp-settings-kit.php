@@ -1,11 +1,15 @@
 <?php
+
 /**
- * Main Class file for `WP_OSA`
+ * This file is part of Wp Settings Kit, a fork of "WP-OOP-Settings-API" maintained by "Rahal Aboulfeth".
+ * "WP-OOP-Settings-API" was created by ( Ahmad Awais :@MrAhmadAwais )  and is licensed under GNU GENERAL PUBLIC Version 2 LICENSE].
+ * This fork includes additional features and improvements by "Rahal Aboulfeth". and is released under the same license (GPL2).
  *
- * Main class that deals with all other classes.
+ * @copyright Copyright (c) 2023 Rahal Aboulfeth
+ * @license  GPL2
  *
- * @since   1.0.0
- * @package WPOSA
+ * @package WP_SKIT_VERSION
+ * @version '1.1.0'
  */
 
 // Exit if accessed directly.
@@ -13,17 +17,20 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+
+define('WP_SKIT_VERSION', '1.1.0');
+
 /**
- * WP_OSA.
+ * WP_Settings_Kit.
  *
- * WP Settings API Class.
+ * WP Settings Kit Class.
  *
  * @since 1.0.0
  */
 
-if (! class_exists('WP_OSA')) :
+if (! class_exists('WP_Settings_Kit')) :
 
-    class WP_OSA
+    class WP_Settings_Kit
     {
         /**
          * Sections array.
@@ -917,10 +924,10 @@ if (! class_exists('WP_OSA')) :
         {
             // add_options_page( $page_title, $menu_title, $capability, $menu_slug, array( $this, $callable ) );
             add_options_page(
-                'WP OOP Settings API',
-                'WP OOP Settings API',
+                'WP Settings Kit',
+                'WP Settings Kit',
                 'manage_options',
-                'wp_osa_settings',
+                'wp_settings_kit',
                 array( $this, 'plugin_page' )
             );
         }
@@ -928,7 +935,7 @@ if (! class_exists('WP_OSA')) :
         public function plugin_page()
         {
             echo '<div class="wrap">';
-            echo '<h1>WP OOP Settings API <span style="font-size:50%;">v' . WPOSA_VERSION . '</span></h1>';
+            echo '<h1>WP Settings Kit <span style="font-size:50%;">v' . WP_SKIT_VERSION . '</span></h1>';
             $this->show_navigation();
             $this->show_forms();
             echo '</div>';
