@@ -9,7 +9,7 @@
  * @license  GPL2
  *
  * @package WP_SKIT_VERSION
- * @version '1.1.0'
+ * @version '1.1.1'
  */
 
 // Exit if accessed directly.
@@ -18,7 +18,7 @@ if (! defined('ABSPATH')) {
 }
 
 
-define('WP_SKIT_VERSION', '1.1.0');
+define('WP_SKIT_VERSION', '1.1.1');
 
 /**
  * WP_Settings_Kit.
@@ -65,7 +65,7 @@ if (! class_exists('WP_Settings_Kit')) :
             if($metabox) {
                 // Use for post metabox
                 $this->metabox = $metabox;
-                add_action('admin_init', array($this, 'add_metabox'));
+                add_action('add_meta_boxes', array($this, 'add_metabox'));
                 add_action('save_post', array($this, 'save_metabox'), 10, 2);
             } else {
                 $this->init_consts();
@@ -90,6 +90,14 @@ if (! class_exists('WP_Settings_Kit')) :
             }
         }
 
+        protected function should_show($field_or_section)
+        {
+            if (isset($field_or_section['show_if']) && is_callable($field_or_section['show_if'])) {
+                return $field_or_section['show_if']();
+            }
+            return true;
+        }
+
 
         /**
          * Initializes the sections and fields.
@@ -97,21 +105,22 @@ if (! class_exists('WP_Settings_Kit')) :
         public function init_options()
         {
             foreach($this->options as $section) {
-                $name = $title = $fields = null;
+                if(!$this->should_show($section)) {
+                    continue;
+                }
+                $name = $title = $fields = $show_if = null;
                 extract($section);
                 $this->add_section(
                     [
                         'id'    => $name,
                         'title' => $title,
+                        'show_if' => $show_if
                     ]
                 );
                 if ($fields) {
                     foreach ($fields as $field) {
-                        if (isset($field['show_if'])  && is_callable($field['show_if'])) {
-                            $show = $field['show_if']();
-                            if(!$show) {
-                                continue;
-                            }
+                        if(!$this->should_show($field)) {
+                            continue;
                         }
 
                         $this->add_field($name, $field);
@@ -994,17 +1003,19 @@ if (! class_exists('WP_Settings_Kit')) :
         /**
          * Adds a metabox.
          */
-        public function add_metabox()
+        public function add_metabox($post_type)
         {
-            $this->init_options();
-            add_meta_box(
-                $this->metabox['id'],
-                $this->metabox['title'],
-                array( $this, 'display_metas' ),
-                $this->metabox['post_types'],
-                $this->metabox['context'],
-                $this->metabox['priority']
-            );
+            if (in_array($post_type, $this->metabox['post_types'])) {
+                $this->init_options();
+                add_meta_box(
+                    $this->metabox['id'],
+                    $this->metabox['title'],
+                    array( $this, 'display_metas' ),
+                    $this->metabox['post_types'],
+                    $this->metabox['context'],
+                    $this->metabox['priority']
+                );
+            }
         }
 
         /**
@@ -1027,26 +1038,30 @@ if (! class_exists('WP_Settings_Kit')) :
         {
             ?>
 			<div class="metabox-holder">
-				<?php foreach ($this->sections_array as $form) {
-				    $section  = $form['id'];
-				    echo "<div id='$section' class='group' ><h3>{$form['title']}</h3>\n";
+				<?php foreach ($this->sections_array as $section) {
+				    $section_id  = $section['id'];
+				    echo "<div id='".esc_attr($section_id)."' class='group' ><h3>{$section['title']}</h3>\n";
 				    echo '<table class="form-table" role="presentation">';
-				    $fields = $this->fields_array[$section];
-				    foreach ($fields as $field) {
-				        $label_for = $field['label_for'];
-				        $name = $field['name'];
-				        $type = $field['type'];
-				        $callback = 'callback_'.$type;
-				        echo "<tr>";
-				        if ($label_for) {
-				            echo '<th scope="row"><label for="' . esc_attr($label_for) . '">' . $name  . '</label></th>';
-				        } else {
-				            echo '<th scope="row">' . $name  . '</th>';
+				    if($this->should_show($section)) {
+				        $fields = $this->fields_array[$section_id];
+				        foreach ($fields as $field) {
+				            if($this->should_show($field)) {
+				                $label_for = $field['label_for'];
+				                $name = $field['name'];
+				                $type = $field['type'];
+				                $callback = 'callback_'.$type;
+				                echo "<tr>";
+				                if ($label_for) {
+				                    echo '<th scope="row"><label for="' . esc_attr($label_for) . '">' . $name  . '</label></th>';
+				                } else {
+				                    echo '<th scope="row">' . $name  . '</th>';
+				                }
+				                echo '<td>';
+				                $this->$callback($field);
+				                echo '</td>';
+				                echo '</tr>';
+				            }
 				        }
-				        echo '<td>';
-				        $this->$callback($field);
-				        echo '</td>';
-				        echo '</tr>';
 				    }
 				    echo '</table></div>';
 				} ?>
@@ -1065,6 +1080,7 @@ if (! class_exists('WP_Settings_Kit')) :
         {
             $posted_data = $_POST;
             if (isset($posted_data['post_type']) && in_array($posted_data['post_type'], $this->metabox['post_types'])) {
+                $this->init_options();
                 foreach ($this->sections_array as $section) {
                     $section_id = $section['id'];
                     $section_data = isset($posted_data[ $section_id  ]) ? $posted_data[$section_id ] : null ;

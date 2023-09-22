@@ -72,7 +72,7 @@ $options =
             'type' => 'number',
             'title' => 'First setting' ,
             'default' => 0 ,
-            // This setting will be included only if the first checkbox is checked
+            // This field will be included only if the first checkbox is checked
             'show_if' => function(){ return defined('MY_AWESOME_FEATURE_ACTIVE') && MY_AWESOME_FEATURE_ACTIVE == 'on'; }
         ]
     ]
