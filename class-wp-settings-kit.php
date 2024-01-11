@@ -9,16 +9,16 @@
  * @license  GPL2
  *
  * @package WP_SKIT_VERSION
- * @version '1.1.1'
+ * @version '1.1.2'
  */
 
 // Exit if accessed directly.
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
 
-define('WP_SKIT_VERSION', '1.1.1');
+define('WP_SKIT_VERSION', '1.1.2');
 
 /**
  * WP_Settings_Kit.
@@ -28,7 +28,7 @@ define('WP_SKIT_VERSION', '1.1.1');
  * @since 1.0.0
  */
 
-if (! class_exists('WP_Settings_Kit')) :
+if (!class_exists('WP_Settings_Kit')) :
 
     class WP_Settings_Kit
     {
@@ -187,7 +187,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function set_sections($sections)
         {
             // Bail if not array.
-            if (! is_array($sections)) {
+            if (!is_array($sections)) {
                 return false;
             }
 
@@ -207,7 +207,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function add_section($section)
         {
             // Bail if not array.
-            if (! is_array($section)) {
+            if (!is_array($section)) {
                 return false;
             }
 
@@ -226,7 +226,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function set_fields($fields)
         {
             // Bail if not array.
-            if (! is_array($fields)) {
+            if (!is_array($fields)) {
                 return false;
             }
 
@@ -321,7 +321,7 @@ if (! class_exists('WP_Settings_Kit')) :
                 }
 
                 // Deals with sections description.
-                if (isset($section['desc']) && ! empty($section['desc'])) {
+                if (isset($section['desc']) && !empty($section['desc'])) {
                     // Build HTML.
                     $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
 
@@ -525,7 +525,7 @@ if (! class_exists('WP_Settings_Kit')) :
          */
         public function get_field_description($args)
         {
-            if (! empty($args['desc'])) {
+            if (!empty($args['desc'])) {
                 $desc = sprintf('<p class="description">%s</p>', $args['desc']);
             } else {
                 $desc = '';
@@ -562,7 +562,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_text($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std'], $args['placeholder']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
             $type  = isset($args['type']) ? $args['type'] : 'text';
             $attributes  = isset($args['attributes']) && is_array($args['attributes']) ? wp_sanitize_script_attributes($args['attributes']) : '';
             $after  = isset($args['after']) ? $args['after'] : '';
@@ -626,7 +626,7 @@ if (! class_exists('WP_Settings_Kit')) :
             if (!isset($args['attributes']) ||  !is_array($args['attributes'])) {
                 $args['attributes'] = [];
             }
-            $args['attributes']['oninput']="this.nextElementSibling.value = this.value";
+            $args['attributes']['oninput'] = "this.nextElementSibling.value = this.value";
             $this->callback_text($args);
         }
 
@@ -700,18 +700,24 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_select($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
 
             $html = sprintf('<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', $size, $args['section'], $args['id']);
             $options = isset($args['options']) ? $args['options'] : [];
-            if (isset($args['query']) && $args['query']['type']=='callback') {
+            if (isset($args['query']) && $args['query']['type'] == 'callback') {
                 if (is_callable($args['query']['function'])) {
                     $query_args = isset($args['query']['args']) ? $args['query']['args'] : [];
                     $options = call_user_func($args['query']['function'], $query_args);
                 }
             }
             foreach ($options as $key => $label) {
-                $html .= sprintf('<option value="%s"%s>%s</option>', $key, selected($value, $key, false), $label);
+                if (is_array($label)){
+                   $desc = isset($label['description'])?$label['description']: '';
+                   $label = isset($label['label'])?$label['label']: $key ;
+                   $html .= sprintf('<option title="%s" value="%s" %s>%s</option>', esc_attr($desc), $key, selected($value, $key, false), esc_attr($label) );
+               } else {
+                   $html .= sprintf('<option value="%s"%s>%s</option>', $key, selected($value, $key, false), esc_attr($label) );
+               }
             }
             $html .= sprintf('</select>');
             $html .= $this->get_field_description($args);
@@ -727,9 +733,9 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_textarea($args)
         {
             $value = esc_textarea($this->get_option($args['id'], $args['section'], $args['std']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
 
-            $html  = sprintf('<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>', $size, $args['section'], $args['id'], $value);
+            $html  = sprintf('<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]"  placeholder="%5$s">%4$s</textarea>', $size, $args['section'], $args['id'], $value, esc_attr($args['placeholder']));
             $html .= $this->get_field_description($args);
 
             echo $html;
@@ -776,7 +782,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_wysiwyg($args)
         {
             $value = $this->get_option($args['id'], $args['section'], $args['std']);
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : '500px';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : '500px';
 
             echo '<div style="max-width: ' . $size . ';">';
 
@@ -804,7 +810,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_file($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
             $id    = $args['section'] . '[' . $args['id'] . ']';
             $label = isset($args['options']['button_label']) ?
             $args['options']['button_label'] :
@@ -825,7 +831,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_image($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
             $id    = $args['section'] . '[' . $args['id'] . ']';
             $label = isset($args['options']['button_label']) ?
             $args['options']['button_label'] :
@@ -847,7 +853,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_password($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
 
             $html  = sprintf('<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value);
             $html .= $this->get_field_description($args);
@@ -863,7 +869,7 @@ if (! class_exists('WP_Settings_Kit')) :
         public function callback_color($args)
         {
             $value = esc_attr($this->get_option($args['id'], $args['section'], $args['std'], $args['placeholder']));
-            $size  = isset($args['size']) && ! is_null($args['size']) ? $args['size'] : 'regular';
+            $size  = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
 
             $html  = sprintf('<input type="text" class="%1$s-text color-picker" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" placeholder="%6$s" />', $size, $args['section'], $args['id'], $value, $args['std'], $args['placeholder']);
             $html .= $this->get_field_description($args);
@@ -1085,7 +1091,7 @@ if (! class_exists('WP_Settings_Kit')) :
                     $section_id = $section['id'];
                     $section_data = isset($posted_data[ $section_id  ]) ? $posted_data[$section_id ] : null ;
                     if ($section_data) {
-                        foreach($section_data as $field_name=>$field_value) {
+                        foreach($section_data as $field_name => $field_value) {
                             $field_config = $this->get_field_config($section_id, $field_name);
                             $sanitizer = $this->get_sanitizer($field_config);
                             if($sanitizer) {
