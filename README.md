@@ -32,6 +32,8 @@ $options =
 [
     'name' => 'MY_AWESOME_FEATURE',
     'title' => 'My Awesome Feature',
+    'description' => "My Awesome Feature description",
+    'side_panel' => "<p>A side Panel content : to add some explanations if necessary</p>",
     'fields' => [
         [
             'id' => 'ACTIVE',
@@ -115,11 +117,10 @@ $metabox = new WP_Settings_Kit($options , $metabox);
 - [x] Create Field (generated content with callback): `content`
 - [x] Create Field: `range`
 - [x] Support for post metabox
+- [x] Re-factor the code with WP Standards
 - [ ] Tutorials
 - [ ] Blog post
 - [ ] Documentation
-- [ ] Re-factor the code with WP Standards
-- [ ] Re-factor the code into classes
 
 ## License
 Release under GNU GPL v2.0
