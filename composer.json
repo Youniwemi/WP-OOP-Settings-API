@@ -7,6 +7,9 @@
     "autoload": {
 	    "files": ["class-wp-settings-kit.php"]
 	},
+    "archive": {
+        "exclude": ["examples/", ".github/"]
+    },
     "require": {
         "php": ">=7.3"
     },

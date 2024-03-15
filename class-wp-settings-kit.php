@@ -8,7 +8,7 @@
  * @license   GPL2
  *
  * @package WP_SKIT_VERSION
- * @version '1.1.3'
+ * @version '1.1.4'
  */
 
 // Exit if accessed directly.
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'WP_Settings_Kit' ) ) :
 
-	define( 'WP_SKIT_VERSION', '1.1.3' );
+	define( 'WP_SKIT_VERSION', '1.1.4' );
 
 	/**
 	 * Main WP Settings Kit class
