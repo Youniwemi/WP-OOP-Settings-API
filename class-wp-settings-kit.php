@@ -11,9 +11,9 @@
  * @version '1.1.4'
  */
 
-// Exit if accessed directly.
+// Return if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	return;
 }
 
 /**
